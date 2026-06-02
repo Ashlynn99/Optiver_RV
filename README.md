@@ -71,7 +71,8 @@ flowchart TD
 │   └── utils.py
 ├── reports/
 │   ├── model_summary.md
-│   └── fold_scores.csv
+│   ├── fold_scores.csv
+│   └── feature_importance_top20.csv
 ├── requirements.txt
 └── README.md
 ```
@@ -118,6 +119,12 @@ export RUN_MODEL_COMPARISON=1
 ## Limitation
 
 This is a Kaggle-style supervised forecasting project. The validation design is leakage-aware by `time_id`, but the model is not a production trading strategy and does not simulate transaction costs, latency, slippage, or live execution.
+
+## Resume Bullets
+
+- Engineered 283 market microstructure features from high-frequency order book and trade data, including WAP returns, realized-volatility moments, spread/depth signals, order imbalance, recency windows, and cross-sectional context features.
+- Built a leakage-aware LightGBM forecasting pipeline with `GroupKFold` by `time_id`, achieving 0.23119 OOF RMSPE versus a 0.49657 realized-volatility baseline, a 53.44% relative RMSPE reduction.
+- Organized the project into reusable feature, validation, metric, and model modules, with validation reports covering fold scores, feature importance, and model limitations.
 
 
 ## Dependencies

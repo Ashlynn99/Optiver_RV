@@ -4,16 +4,40 @@ This is my end-to-end realized volatility forecasting project based on the Optiv
 
 ## Final Results
 
-The repository does not include raw Kaggle data, so exact metrics are generated after running the notebook. The notebook writes the final report to `reports/model_summary.md`.
+These metrics come from executed Optiver notebook output that was cross-checked across three local notebook copies. The repository does not include raw Kaggle data.
 
-- Baseline RMSPE: pending notebook run
-- LightGBM OOF RMSPE: pending notebook run
-- Relative RMSPE reduction: pending notebook run
-- Number of engineered features: pending notebook run
+- Baseline RMSPE: 0.49657
+- LightGBM OOF RMSPE: 0.23119
+- Mean CV RMSPE: 0.23109
+- Relative RMSPE reduction: 53.44%
+- Number of engineered features: 283
+- Training rows: 428,932
 - CV strategy: `GroupKFold` by `time_id`
 - Main feature groups: WAP returns, realized-volatility moments, spread/depth signals, order imbalance, tail-window features, trade-flow features, and cross-sectional context features
 
+## Fold Scores
+
+| Fold | RMSPE | Train rows | Valid rows | Best iteration |
+|---:|---:|---:|---:|---:|
+| 1 | 0.22155 | 343,145 | 85,787 | 2,977 |
+| 2 | 0.23927 | 343,145 | 85,787 | 3,392 |
+| 3 | 0.23283 | 343,146 | 85,786 | 3,274 |
+| 4 | 0.22484 | 343,146 | 85,786 | 2,551 |
+| 5 | 0.23694 | 343,146 | 85,786 | 3,379 |
+
 ## Workflow
+
+Text summary:
+
+```text
+Raw book/trade parquet
+-> WAP, spread, depth, imbalance features
+-> Tail-window aggregation
+-> Fold-safe stock context + batch time context
+-> GroupKFold by time_id
+-> LightGBM log-target model
+-> RMSPE, feature importance, residual diagnostics
+```
 
 ```mermaid
 flowchart TD
@@ -56,12 +80,13 @@ The notebook is the main report. The `src/` folder separates the reusable featur
 
 ## Report Outputs
 
-After running the notebook, the following files are updated or generated:
+The current report files include the verified validation numbers above. When the notebook is rerun with raw data, it also exports the diagnostic figures.
 
 ```text
 reports/
   model_summary.md
   fold_scores.csv
+  feature_importance_top20.csv
   feature_importance.png
   residual_diagnostics.png
 ```

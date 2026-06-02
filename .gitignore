@@ -1,0 +1,18 @@
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+
+# Data and generated artifacts
+*.parquet
+*.csv
+*.zip
+*.pkl
+*.joblib
+working/
+kaggle/
+submission*.csv
+train*.csv
+test*.csv
+
+# Local helper used to assemble this notebook in Codex
+build_optiver_portfolio_project.py

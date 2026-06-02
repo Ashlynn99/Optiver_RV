@@ -94,11 +94,6 @@ export RUN_MODEL_COMPARISON=1
 
 This is a Kaggle-style supervised forecasting project. The validation design is leakage-aware by `time_id`, but the model is not a production trading strategy and does not simulate transaction costs, latency, slippage, or live execution.
 
-## Resume Bullets
-
-- Engineered market microstructure features from high-frequency order book and trade data, including WAP returns, realized-volatility moments, spread/depth signals, order imbalance, recency windows, and cross-sectional context features.
-- Built a leakage-aware LightGBM forecasting pipeline with `GroupKFold` by market time bucket, log-target modeling, RMSPE validation, feature importance analysis, and residual diagnostics.
-- Added Optuna hyperparameter tuning and benchmarked LightGBM against CatBoost and a tabular neural baseline under the same grouped validation design.
 
 ## Dependencies
 

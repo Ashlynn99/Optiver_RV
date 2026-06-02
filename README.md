@@ -41,15 +41,3 @@ export RUN_TUNING=1
 export OPTUNA_TRIALS=15
 export RUN_MODEL_COMPARISON=1
 ```
-
-The notebook does not include the raw Kaggle data. Keep data files, feature caches, and submission files out of GitHub.
-
-## Resume Bullets
-
-- Engineered market microstructure features from high-frequency order book and trade data, including WAP returns, realized-volatility moments, spread/depth signals, order imbalance, recency windows, and cross-sectional context features.
-- Built a leakage-aware LightGBM forecasting pipeline with `GroupKFold` by market time bucket, log-target modeling, RMSPE validation, feature importance analysis, and residual diagnostics.
-- Added Optuna hyperparameter tuning and benchmarked LightGBM against CatBoost and a tabular neural baseline under the same grouped validation design.
-
-## Dependencies
-
-See `requirements.txt`.

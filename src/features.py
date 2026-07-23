@@ -3,6 +3,7 @@ import re
 import numpy as np
 import pandas as pd
 
+from .audit import validate_book_frame, validate_feature_keys, validate_trade_frame
 from .metrics import realized_absvar, realized_kurtosis, realized_skew, realized_volatility
 
 
@@ -139,6 +140,7 @@ def make_book_bin_features(df):
 def book_preprocessor(file_path):
     stock_id = extract_stock_id(file_path)
     df = pd.read_parquet(file_path)
+    validate_book_frame(df, name=f"book stock_id={stock_id}")
     df = df.sort_values(["time_id", "seconds_in_bucket"]).reset_index(drop=True)
 
     df["wap1"] = calc_wap1(df)
@@ -177,7 +179,9 @@ def book_preprocessor(file_path):
     feat = feat.merge(make_book_bin_features(df), on="time_id", how="left")
     feat["stock_id"] = stock_id
     cols = ["stock_id", "time_id"] + [c for c in feat.columns if c not in ["stock_id", "time_id"]]
-    return feat[cols]
+    feat = feat[cols]
+    validate_feature_keys(feat, name=f"book features stock_id={stock_id}")
+    return feat
 
 
 def make_trade_window_features(wdf, suffix):
@@ -214,6 +218,7 @@ def make_trade_window_features(wdf, suffix):
 def trade_preprocessor(file_path):
     stock_id = extract_stock_id(file_path)
     df = pd.read_parquet(file_path)
+    validate_trade_frame(df, name=f"trade stock_id={stock_id}")
     df = df.sort_values(["time_id", "seconds_in_bucket"]).reset_index(drop=True)
 
     df["log_return"] = df.groupby("time_id")["price"].transform(log_return)
@@ -226,5 +231,6 @@ def trade_preprocessor(file_path):
 
     feat["stock_id"] = stock_id
     cols = ["stock_id", "time_id"] + [c for c in feat.columns if c not in ["stock_id", "time_id"]]
-    return feat[cols]
-
+    feat = feat[cols]
+    validate_feature_keys(feat, name=f"trade features stock_id={stock_id}")
+    return feat

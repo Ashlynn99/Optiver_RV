@@ -1,6 +1,9 @@
 .DS_Store
 __pycache__/
 .ipynb_checkpoints/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Data and generated artifacts
 *.parquet

@@ -88,16 +88,19 @@ def apply_context_features(base_df, stock_context, seed_cols):
     return out.loc[:, ~out.columns.duplicated()].copy()
 
 
-def make_feature_columns(train_context, test_context=None):
+def make_feature_columns(train_context, test_context=None, include_stock_id=True):
     cols = [c for c in train_context.columns if c not in FEATURE_EXCLUDE_COLS]
     if test_context is not None:
         cols = [c for c in cols if c in test_context.columns]
+    if not include_stock_id:
+        cols = [c for c in cols if c != "stock_id"]
     return cols
 
 
 def prepare_feature_frame(df, feature_cols, fill_values=None):
     X = df.reindex(columns=feature_cols).copy()
     numeric_cols = [c for c in feature_cols if c != "stock_id"]
+    X[numeric_cols] = X[numeric_cols].apply(pd.to_numeric, errors="coerce")
     X[numeric_cols] = X[numeric_cols].replace([np.inf, -np.inf], np.nan)
 
     if fill_values is None:
@@ -107,4 +110,3 @@ def prepare_feature_frame(df, feature_cols, fill_values=None):
     if "stock_id" in X.columns:
         X["stock_id"] = X["stock_id"].astype("category")
     return X, fill_values
-

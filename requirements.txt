@@ -1,10 +1,12 @@
-numpy
-pandas
-scikit-learn
-lightgbm
-optuna
-catboost
-matplotlib
-seaborn
-pyarrow
-jupyter
+numpy>=1.26,<3
+pandas>=2.1,<3
+scikit-learn>=1.3,<2
+lightgbm>=4.7,<5
+matplotlib>=3.8,<4
+seaborn>=0.13,<1
+pyarrow>=14,<25
+jupyter>=1,<2
+
+# Optional experiments used only when their notebook flags are enabled.
+optuna>=3.5,<5
+catboost>=1.2,<2
